@@ -8,6 +8,7 @@ export class SimpleAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    // Define the function
     const simpleFn = new lambdanode.NodejsFunction(this, "SimpleFn", {
       architecture: lambda.Architecture.ARM_64,
       runtime: lambda.Runtime.NODEJS_22_X,
@@ -16,5 +17,18 @@ export class SimpleAppStack extends cdk.Stack {
       memorySize: 128,
     });
 
-  }
+    // Add the URL (MUST be inside the constructor to see 'simpleFn')
+    const simpleFnURL = simpleFn.addFunctionUrl({
+      authType: lambda.FunctionUrlAuthType.AWS_IAM,
+      cors: {
+        allowedOrigins: ["*"],
+      },
+    });
+
+    // 3. Output the URL
+    new cdk.CfnOutput(this, "Simple Function Url", { 
+      value: simpleFnURL.url 
+    });
+
+  } // <--- The constructor ends here
 }
