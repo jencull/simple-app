@@ -75,7 +75,7 @@ export class SimpleAppStack extends cdk.Stack {
       },
     });
 
-    moviesTable.grantReadData(getMovieByIdFn)
+    moviesTable.grantReadData(getMovieByIdFn) //cant read info without read permissions
 
     new cdk.CfnOutput(this, "Get Movie Function Url", { value: getMovieByIdURL.url });
 
@@ -84,5 +84,5 @@ export class SimpleAppStack extends cdk.Stack {
       value: simpleFnURL.url 
     });
 
-  } // <--- The constructor ends here
+  }
 }
